@@ -88,9 +88,10 @@ support offered.
 
 ### `reaction`
 
-**Definition:** The writer's immediate response to something happening right
-now, such as a play, tonight's game, or the broadcast, and it describes what
-they're seeing or feeling rather than claiming anything beyond tonight.
+**Definition:** The writer's immediate response to something that just
+happened, such as a play, tonight's game, the broadcast, or news that just
+broke, and it describes what they're seeing or feeling rather than claiming
+anything beyond it.
 
 **Example 1:**
 > I've got dateline and not the game…. This sucks

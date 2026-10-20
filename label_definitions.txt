@@ -5,4 +5,4 @@
 
 analysis: states a conclusion backed by a specific, checkable fact (a stat, an age, an injury, a contract or rule detail, or a named comparison), where the fact is the reason for the conclusion rather than a restatement of it, and is broad enough to support it
 hot_take: a confident claim about players, teams, or the league that would still be a claim after tonight's game is over, with no checkable support offered
-reaction: the writer's immediate response to something happening right now (a play, tonight's game, or the broadcast), describing what they're seeing or feeling rather than claiming anything beyond tonight
+reaction: the writer's immediate response to something that just happened (a play, tonight's game, the broadcast, or news that just broke), describing what they're seeing or feeling rather than claiming anything beyond it

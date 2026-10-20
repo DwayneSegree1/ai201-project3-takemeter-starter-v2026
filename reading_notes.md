@@ -166,3 +166,70 @@ reason passes it. The real problems were facts at the wrong **scale** (#1),
 facts aimed at a **side point** (#7), and stats from tonight that just
 **restate** the feeling (#5, #6, #8). All of these rules are now in the
 README.
+
+---
+
+## Collection and labelling log (unit 5, step 4)
+
+**Collected:** 1,619 unique comments from r/nba's public RSS feeds on
+2026-10-20 (opening day). They came from 19 threads: game threads, the Daily
+Discussion, and news threads on contracts, injuries, broadcasting and trades.
+The scraper was timeboxed and stopped once there was enough data.
+
+**Filtered:** I read 360 candidates and dropped 150. The drop reasons were
+the ones set out in the taxonomy: can't be read without the parent comment,
+questions and AMA questions, jokes and bits, off-topic (harps, commutes,
+John Tesh), insults, and politics.
+
+**Balanced:** that left 45 `analysis`, 84 `hot_take` and 71 `reaction`,
+which breaks criterion 1. To fix it, I read 45 more fact-heavy comments and
+added the 10 that were clearly `analysis`, then randomly removed 9
+`hot_take` rows (seed 2026, hard cases protected).
+
+**labels.csv:** 201 rows, no duplicates.
+- **20 rows** have `cold` in the note column and **no label**. These are
+  for you to label unaided, before you look at anything else. Claude's
+  labels for them are kept outside the repo.
+- **181 rows** are marked `pre-labelled by Claude, NOT yet checked`. Read
+  and correct every one, then change the note to `pre-labelled, checked`.
+
+Counts using Claude's labels for all 201 rows: analysis 55 (27%),
+hot_take 75 (37%), reaction 71 (35%). That's within criterion 1, and
+nothing is near the 70% warning.
+
+**Definition change made while labelling:** `reaction` now covers *news that
+just broke*, not only live games. Many comments in news threads were plain
+responses like "Genuinely hilarious situation" or "Really awesome letter".
+They are reactions, but the old definition only covered games and
+broadcasts.
+
+## Hard cases (flagged `HARD CASE` in the note column)
+
+1. **"Tyrese Maxey and Jalen Brown are 50PPG. They will carry this team…"**
+   It's `analysis` or `hot_take`. → `analysis`: the 50 PPG is a season-level
+   stat offered as the reason, so it passes the scale rule. It's shaky,
+   because the number may be wrong, but checkable isn't the same as correct.
+2. **"Get in price at MSG is $1,900. I don't think there has ever been a
+   regular season NBA game that expensive before"**: `reaction` or
+   `analysis`. → `analysis`: posted on the day, but the $1,900 supports a
+   claim about all of history.
+3. **"Let's go. In Georgia you have to pay like $40 a month for Bally
+   sports… It's destroyed the fan base. Being able to watch on prime will
+   be awesome."**: `reaction` or `analysis`. → `reaction`: the fact backs a
+   side claim, and most of the post is excitement. This is the main-claim
+   rule.
+4. **"Same old nba...hucking 3s after 3s after 3s. A shoulder brush is a
+   foul...garbage"**: `reaction` or `hot_take`. → `hot_take`: posted live,
+   but "same old nba" is a claim about the league, not tonight.
+5. **"It's $25 million a year. That's really nothing in today's NBA."**
+   It's `analysis` or `hot_take`. → `hot_take`: the number is the thing
+   being judged, not evidence. The post citing "86th highest paid" is
+   `analysis`.
+6. **"…historically bad things happen when Joel exceeds that [30 mpg]"**:
+   `analysis` or `hot_take`. → `hot_take`: lots of minutes numbers, but the
+   one doing the arguing ("historically bad things") isn't specific.
+
+**Consistency watch:** "he was injured last year" counted as a checkable fact
+when it was the only reason given (→ `analysis`), but not when it was
+buried in a rant (→ `hot_take`). That's the main-claim rule, and it's worth
+checking when you review.
