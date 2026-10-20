@@ -205,8 +205,17 @@ Say so plainly — the disclosure is required, not penalised. -->
 **Base model:** `distilbert-base-uncased`
 
 **Settings:** 3 epochs, learning rate 2e-5, batch size 16, max length 128
-tokens, seed 42. Trained on `mps` (Apple Silicon GPU), torch 2.2.2.
-Training took about 24 seconds.
+tokens, seed 42. Training took about 24 seconds.
+
+**Hardware:** MacBook Pro 16" 2019 (MacBookPro16,1), Intel Core i9-9880H, AMD
+Radeon Pro 5500M 4 GB, macOS 26.6.2. Trained on `mps`, with torch 2.2.2 and
+Python 3.12.14.
+
+> `results.json` records `device_name` as "Apple Silicon GPU (MPS)". That's
+> the notebook's fixed label for any `mps` device and it's wrong for this
+> machine. On an Intel Mac, `mps` runs on the AMD Radeon Pro 5500M through
+> Metal. I've left the generated file unedited. Keep this in mind when
+> comparing numbers with people on Apple Silicon, CUDA or CPU.
 
 **Anything I changed from the defaults, and why:** Nothing. All settings are
 the notebook defaults.
