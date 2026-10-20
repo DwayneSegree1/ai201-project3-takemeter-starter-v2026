@@ -54,34 +54,98 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+### `analysis`
 
-**Definition:**
-
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** States a conclusion and backs it with a specific, checkable
+fact, such as a stat, an age, an injury, a contract or rule detail, or a
+named comparison. The fact has to be the reason for the conclusion, not a
+restatement of it, and it has to be broad enough to support it.
 
 **Example 1:**
->
+> Wade has a sprained ankle so he is going to miss a bit. Barlow is also hurt
+> and will miss at least first couple of weeks. They have no bigs right now.
 
 **Example 2:**
->
+> Most regular people can actually. Because of the differences polymarket,
+> kalshi, and all other prediction markets are by default allowed in all US
+> states, compared to normal sportsbooks which only operate in states which
+> have legalized them. As well as the age limit being different, where
+> prediction markets require users only to be 18, not the 21 that most
+> sportsbooks require. That's a lot of regular people that have completely
+> different access to this kind of thing
+
+### `hot_take`
+
+**Definition:** A confident claim about players, teams, or the league that
+would still be a claim after tonight's game is over, with no checkable
+support offered.
+
+**Example 1:**
+> Celtics shouldve kept Brown
+
+**Example 2:**
+> All I see here is that NBA teams have too much fucking money.
+
+### `reaction`
+
+**Definition:** The writer's immediate response to something happening right
+now, such as a play, tonight's game, or the broadcast, and it describes what
+they're seeing or feeling rather than claiming anything beyond tonight.
+
+**Example 1:**
+> I've got dateline and not the game…. This sucks
+
+**Example 2:**
+> Kind of fun having basketball playing in the background while I work
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `reaction` and `hot_take`. Game threads are full of
+comments written mid-play that slide from "what I just saw" into "what this
+player is."
+
+> Paul George doesn't know how to pass.
+
+That was posted live, one quarter into the season, probably right after a
+turnover. It reads like a reaction, but it claims something about Paul George
+in general.
 
 **The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+Ask whether the claim would still be a claim once tonight's game ends. If it
+is limited to tonight, this play, or the writer's own experience ("Turnover
+machine Cs", "I've got dateline and not the game"), it's `reaction`. If it
+says something about a player, team, or the league in general ("doesn't know
+how to pass", "is looking fantastic this year"), it's `hot_take`, however
+fresh or heated it is. So the Paul George post is `hot_take`.
 
+**Secondary rules** (tightened after the stress test below):
+
+- *`analysis` vs `hot_take`: the fact has to carry the main claim.*
+  - A number that's part of the prediction isn't evidence. "NBA will start
+    the project, see it going bankrupt in 3 years" is `hot_take`.
+  - **Scale:** one game's stat can't carry a claim about a whole player or
+    season. "Ant dropped 40 last night… he's top 3" is `hot_take`.
+  - **Main claim:** if the fact supports only a side point, label by the
+    headline claim. "Knicks are winning the East… Brunson took a discount" is
+    `hot_take`.
+- *`reaction` vs `analysis`: a fact from tonight's game counts only if it
+  supports a stated conclusion that goes beyond the fact.*
+  - "Wemby has 6 blocks… they've completely given up on the paint" is
+    `analysis`: the blocks are the reason for a claim about behaviour.
+  - "Luka is the best player in the world tonight… 45 on a bad ankle" is
+    `reaction`: the 45 just restates the praise.
+  - A rhetorical question or outburst isn't a conclusion. "…third time this
+    quarter. Who is coaching this defense??" is `reaction`.
+- *Sarcasm:* label the claim it implies. "Glad to see the refs are still
+  getting their Lakers checks" claims the refs favour the Lakers in general,
+  so it's `hot_take`.
+- *Accuracy doesn't matter:* "checkable" means you could look it up, not
+  that it's correct.
+
+**Not labelled, so dropped at collection:** comments that can't be understood
+without their parent ("Hot air balloon"), questions and tech support ("Does
+anyone have a solution for YoutubeTV…"), and off-topic or political trash
+talk.
 
 
 ---

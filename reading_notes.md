@@ -141,3 +141,28 @@ has plenty of text.
 distinctions 1–3, and spoilers aren't an issue. r/movies would need a fourth
 label (questions) or heavy filtering, and its line between taste and hot
 take is harder to draw.
+
+---
+
+## Stress test (unit 5, step 2)
+
+A separate AI agent saw only my three draft definitions and wrote 8 r/nba
+comments meant to sit on the boundaries. **Only 2 of 8 classified cleanly**
+under the draft rules, so I tightened them before labelling anything.
+
+| # | Post | First pass | Final | Rule it forced |
+|---|---|---|---|---|
+| 1 | "Ant dropped 40 last night and people still won't admit he's a top 3 player…" | unsure | hot_take | Scale: one game's stat can't carry a claim about a whole player |
+| 2 | "…Jokic… won MVP in 2022 with Murray out the whole season and MPJ out basically all of it too, so please just stop." | analysis | analysis | (clean: heated, but the fact refutes the claim) |
+| 3 | "Another Tatum stepback brick… This dude will never be a closer" | hot_take | hot_take | (clean: "would it still be a claim after tonight") |
+| 4 | "Oh cool, another moving screen not called. Glad to see the refs are still getting their Lakers checks on time." | unsure | hot_take | Sarcasm: label the claim it implies |
+| 5 | "Wemby has 6 blocks and it's not even halftime. Nobody is driving the lane anymore tonight…" | unsure | analysis | A fact from tonight counts if it supports a conclusion beyond the fact |
+| 6 | "…left Curry wide open off the inbound AGAIN, that's the third time this quarter. Who is coaching this defense??" | unsure | reaction | A rhetorical question isn't a conclusion |
+| 7 | "Knicks are winning the East, book it. Brunson took a discount extension at like $35M…" | unsure | hot_take | Label by the main claim; here the fact supports only a side point |
+| 8 | "Luka is the best player in the world tonight… 45 on a bad ankle" | unsure | reaction | A fact that just restates the conclusion isn't support |
+
+Pattern: the draft "delete the fact" test was too weak. Any fact offered as a
+reason passes it. The real problems were facts at the wrong **scale** (#1),
+facts aimed at a **side point** (#7), and stats from tonight that just
+**restate** the feeling (#5, #6, #8). All of these rules are now in the
+README.
