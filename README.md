@@ -202,16 +202,31 @@ Say so plainly — the disclosure is required, not penalised. -->
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, max length 128
+tokens, seed 42. Trained on `mps` (Apple Silicon GPU), torch 2.2.2.
+Training took about 24 seconds.
 
-**Anything I changed from the defaults, and why:**
+**Anything I changed from the defaults, and why:** Nothing. All settings are
+the notebook defaults.
 
 **Split sizes:** <!-- train / val / test, and per-label counts in the test
 split. If a label had fewer than about 8 in test, say so — it explains a lot
 of next unit's variance. -->
 
+train 139 · val 31 · test 31 (stratified 70/15/15, seed 42)
+
+| Label | Train | Val | Test |
+|---|---|---|---|
+| `analysis` | 38 | 9 | 8 |
+| `hot_take` | 52 | 11 | 12 |
+| `reaction` | 49 | 11 | 11 |
+
+`analysis` has only 8 test posts, right at the "about 8" line, so each
+post moves its F1 by about 0.1. Expect it to be the jumpiest number across
+next unit's seeds. It's my smallest label because checkable-fact posts were
+only about 1 in 10 of what I read.
 
 
 ---
