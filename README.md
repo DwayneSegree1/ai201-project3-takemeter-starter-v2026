@@ -202,9 +202,8 @@ records this on every row.
 <!-- Any post that made you pause: what it was, which two labels it could have
      been, and what you chose. These are worth more than the easy 190. -->
 
-These were flagged `HARD CASE` in the note column when they were
-pre-labelled. The labels below are Claude's pre-labels, using the rules in the
-Label Taxonomy section.
+These were flagged `HARD CASE` in the note column. Each label follows the
+rules in the Label Taxonomy section.
 
 **1.**
 > *The post:* "Same old nba...hucking 3s after 3s after 3s. A shoulder brush
@@ -331,9 +330,9 @@ notebook.
 **Every one of the 201 rows in `labels.csv` was pre-labelled by Claude.**
 That includes the 20 rows meant for the unaided cold check, which I asked
 Claude to label instead. **No cold check was done** (see The Dataset). The
-note column marks every row as pre-labelled. The current labels and the
-results from the unit 5 run are Claude's pre-labels; I haven't reviewed and
-corrected them yet. Claude also wrote the collection script, the taxonomy
+note column marks every row as pre-labelled. I haven't yet reviewed or
+corrected these labels, and the unit 5 results were trained on them as they
+are. Claude also wrote the collection script, the taxonomy
 and criteria drafts, and ran notebook sections 1–5.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
