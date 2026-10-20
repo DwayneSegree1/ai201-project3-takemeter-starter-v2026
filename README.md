@@ -161,6 +161,17 @@ talk.
 **How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
 Say so plainly — the disclosure is required, not penalised. -->
 
+**No cold check was done.** None of the 201 rows were labelled by me unaided.
+Twenty rows were set aside as the cold check, but I asked Claude to label
+them instead. They're marked
+`pre-labelled by Claude (cold slot: no unaided labelling done)` in the note
+column, and no row in `labels.csv` is marked `cold`. That means next unit's
+agreement report has no unaided baseline of mine to compare against.
+
+All 201 rows were pre-labelled by Claude (Claude Code) using the definitions
+and decision rules in the Label Taxonomy section above. The note column
+records this on every row.
+
 **Counts per label:**
 
 | Label | Count | Share |
