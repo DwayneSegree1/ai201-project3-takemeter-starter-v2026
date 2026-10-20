@@ -42,6 +42,14 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
+TakeMeter sorts comments from **r/nba**, Reddit's main NBA community, by how
+substantial they are. Each comment is labelled `analysis` (a conclusion
+backed by a specific, checkable fact), `hot_take` (a confident general claim
+with no support), or `reaction` (an in-the-moment response to a play, a
+game, the broadcast, or news that just broke). The classifier is a
+fine-tuned `distilbert-base-uncased`, trained on 201 labelled r/nba
+comments. The goal is to separate argued posts from asserted ones and live
+chatter, which r/nba's game and news threads mix together constantly.
 
 
 ---
@@ -156,7 +164,15 @@ talk.
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** r/nba's public RSS feeds
+(reddit.com/r/nba), collected on 2026-10-20, the opening day of the 2026-27
+season. A short, rate-limited script pulled 1,619 unique comments from 19
+threads: the opening game thread, the Daily Discussion, and news threads
+about contracts, injuries, broadcasting deals and trades. 395 candidates were
+read. Comments were dropped if they couldn't be understood without their
+parent, were questions, jokes, off-topic, insults or political, or were
+shorter than 8 words. To meet criterion 1, 10 more fact-heavy comments were
+added for `analysis`, and 9 `hot_take` rows were removed at random.
 
 **How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
 Say so plainly — the disclosure is required, not penalised. -->
@@ -176,36 +192,51 @@ records this on every row.
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `analysis` | 55 | 27% |
+| `hot_take` | 75 | 37% |
+| `reaction` | 71 | 35% |
+| **Total** | 201 | 100% |
 
 **Three hard cases**
 
 <!-- Any post that made you pause: what it was, which two labels it could have
      been, and what you chose. These are worth more than the easy 190. -->
 
+These were flagged `HARD CASE` in the note column when they were
+pre-labelled. The labels below are Claude's pre-labels, using the rules in the
+Label Taxonomy section.
+
 **1.**
-> *The post:*
+> *The post:* "Same old nba...hucking 3s after 3s after 3s. A shoulder brush
+> is a foul...garbage" (posted live in the opening game thread)
 >
-> *Could have been:*
+> *Could have been:* `reaction` or `hot_take`
 >
-> *I chose, because:*
+> *Chose `hot_take`, because:* it was written mid-game, but "same old nba" is
+> a claim about the league, not about tonight. It would still be a claim
+> after the game ends, and that's the test for the hardest boundary.
 
 **2.**
-> *The post:*
+> *The post:* "It's $25 million a year. That's really nothing in today's NBA."
 >
-> *Could have been:*
+> *Could have been:* `analysis` or `hot_take`
 >
-> *I chose, because:*
+> *Chose `hot_take`, because:* the number is the thing being judged, not
+> evidence for the judgement. A comment in the same thread said Braun "will
+> be the 86th highest paid player in the league". That one is `analysis`,
+> because the ranking is the reason $25M isn't much.
 
 **3.**
-> *The post:*
+> *The post:* "Let's go. In Georgia you have to pay like $40 a month for
+> Bally sports to watch the Hawks. It's destroyed the fan base. Being able
+> to watch on prime will be awesome. Definitely going to be tuning in more"
 >
-> *Could have been:*
+> *Could have been:* `reaction` or `analysis`
 >
-> *I chose, because:*
+> *Chose `reaction`, because:* the $40 does back a claim ("destroyed the fan
+> base"), but that's a side point. The post is mostly the writer's
+> excitement about news that just broke. Under the main-claim rule, it's
+> labelled by its headline.
 
 ---
 
@@ -260,19 +291,50 @@ only about 1 in 10 of what I read.
      workflow and disclosing it costs you nothing. Not disclosing it is the
      problem. -->
 
-**Moment 1**
+I used Claude (Claude Code) throughout this unit: to read the community,
+draft the taxonomy and criteria, collect and pre-label the posts, and run the
+notebook.
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+**Moment 1: stress-testing the labels**
 
-**Moment 2**
+- *What I asked for:* A separate AI agent was given only my three draft
+  definitions. It was asked to write eight r/nba-style comments that sit on
+  the boundaries between labels.
+- *What came back:* Eight posts. Only 2 of the 8 could be classified cleanly.
+  "Ant dropped 40 last night… he's a top 3 player" passed my "delete the
+  fact" test even though one game can't prove that. "Luka is the best player
+  in the world tonight… 45 on a bad ankle" had a stat that only restated the
+  praise.
+- *What I changed:* The decision rules were tightened before any labelling.
+  The new rules are scale (one game's stat can't support a claim about a
+  whole player), main claim (a fact backing a side point doesn't count), and
+  restatement (a stat from tonight that just repeats the feeling is
+  `reaction`). Rhetorical questions and sarcasm got their own rules. All of
+  these are in the Label Taxonomy section.
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+**Moment 2: the `reaction` definition while pre-labelling**
+
+- *What I asked for:* Pre-label the collected comments under the tightened
+  definitions.
+- *What came back:* Many comments in news threads didn't fit any label. They
+  were plain responses to news that had just broken, like "Genuinely
+  hilarious situation" and "Really awesome letter. Nothing quite like a
+  mom's love". The `reaction` definition only covered live games and the
+  broadcast.
+- *What I changed:* `reaction` was widened to "something that just happened,
+  such as a play, tonight's game, the broadcast, or news that just broke".
+  The change was made in the README and in `label_definitions.txt`, so the
+  baseline is judged on the same wording.
 
 **Pre-labelling disclosure:**
+
+**Every one of the 201 rows in `labels.csv` was pre-labelled by Claude.**
+That includes the 20 rows meant for the unaided cold check, which I asked
+Claude to label instead. **No cold check was done** (see The Dataset). The
+note column marks every row as pre-labelled. The current labels and the
+results from the unit 5 run are Claude's pre-labels; I haven't reviewed and
+corrected them yet. Claude also wrote the collection script, the taxonomy
+and criteria drafts, and ran notebook sections 1–5.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
