@@ -187,9 +187,10 @@ added the 10 that were clearly `analysis`, then randomly removed 9
 `hot_take` rows (seed 2026, hard cases protected).
 
 **labels.csv:** 201 rows, no duplicates.
-- **20 rows** have `cold` in the note column and **no label**. These are
-  for you to label unaided, before you look at anything else. Claude's
-  labels for them are kept outside the repo.
+- **20 rows** were set aside as the cold check, to be labelled unaided.
+  **Update: Dwayne asked Claude to label them instead**, so they're now
+  marked `pre-labelled by Claude (cold slot: no unaided labelling done)`.
+  **No cold labelling has been done.** Disclose this in the README.
 - **181 rows** are marked `pre-labelled by Claude, NOT yet checked`. Read
   and correct every one, then change the note to `pre-labelled, checked`.
 
