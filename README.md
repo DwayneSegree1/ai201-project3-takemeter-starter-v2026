@@ -335,6 +335,41 @@ corrected these labels, and the unit 5 results were trained on them as they
 are. Claude also wrote the collection script, the taxonomy
 and criteria drafts, and ran notebook sections 1–5.
 
+**Unit 6 additions:**
+
+**Moment 3: Claude spotted the pattern in the baseline's errors**
+
+- *What I asked for:* run `baseline.py` with my definitions and with bare
+  label names.
+- *What came back:* the definitions run scored 0.258. On checking the
+  per-post predictions, Claude found it had predicted `analysis` for all 31
+  posts. It traced the cause to `baseline.py`'s template
+  `"This post is {}."`: my definitions start with verbs ("states a
+  conclusion…"), so the hypotheses came out ungrammatical.
+- *What I changed:* I reported the definitions run as the baseline, and the
+  bare-names run (0.613) next to it as the measured value of my
+  definitions (−0.355). I didn't rewrite the definitions to improve the
+  number after seeing it.
+
+**Moment 4: Claude diagnosed my model's errors from the training log**
+
+- *What I asked for:* run the three seeds and diagnose the misses.
+- *What came back:* Claude noticed that final training loss (about 1.03)
+  sat just under ln 3 (1.10, uniform guessing). It also found that seeds 42
+  and 7 never predicted `analysis` at all, and the confusion only ran one
+  way, into `hot_take`. It read this as undertraining, not labelling
+  inconsistency, and backed that with the agreement report (30/30 with
+  staff, including every hard `analysis`/`hot_take` post).
+- *What I changed:* that diagnosis chose the improvement: one change,
+  `EPOCHS` 3 → 10, committed before the after-run. It fixed criteria 2
+  and 3, and loss fell to about 0.69.
+
+**More AI use to disclose:** Claude also labelled all 30 staff-set posts in
+`my_staff_labels.csv` at my request. They were committed before the staff
+key was in the repo, so the 30/30 agreement measures Claude's application
+of the staff rules, not mine. Claude ran every notebook section and script
+in this unit and drafted this README's unit 6 sections.
+
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.
@@ -748,11 +783,56 @@ had been met.**
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+**Criterion 4: self-consistency ≥ 85% on 30 cold re-labels. MISSED (never
+measured).**
 
+- *What I'd do:* take 30 random rows from `labels.csv`, copy only the
+  `text` column into a new file, and label them myself from the README
+  definitions without looking at `labels.csv`. Then run `agreement.py`
+  with `--staff-posts` / `--staff-labels` pointed at the original rows.
+  Before that, read and correct all 201 pre-labels, because right now the
+  "first pass" being compared against isn't mine.
+- *Why I stopped:* I chose to have Claude label the cold-check rows and
+  the staff set rather than label them myself. So no unaided labelling of
+  mine exists to measure, and the all-AI labelling hasn't been reviewed.
+  This is also the only thing that could fully rule out a labelling cause
+  for the remaining `hot_take` errors.
+
+**Criterion 5: confidence gap ≥ 0.20 on all seeds. MISSED (seed 2024:
+0.80 vs 0.80).**
+
+- *What I'd do:* first, check whether it's a real failure or a ceiling
+  effect. With 31 test posts per seed, each confidence third is only 10
+  posts. On seed 2024, 8 of the 10 least-confident predictions were right,
+  so there's almost no room for a gap. Pooling all three seeds (93 posts,
+  31 per third) would give a measure that one lucky post can't swing. More
+  labelled posts would help both this and the 0.129 accuracy spread.
+- *Why I stopped:* the milestone allows one change, and it went to the
+  undertraining that criteria 2 and 3 pointed at. Fixing criterion 5 by
+  changing the measurement after seeing it miss would be moving the
+  target. So it stays a miss here, with the ceiling-effect explanation
+  written down, not used as an excuse.
+
+**Not a criterion, but still broken: stability.** Accuracy still moves
+0.129 across seeds, which is 4 posts on a 31-post test split. The model is
+now learning, but the dataset is too small to measure it to within 10
+points. The fix is more data, ideally more `analysis` and `hot_take` posts,
+since `hot_take` is the weakest label on every seed.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
+
+I meant `hot_take` to be defined by what's missing (a confident claim with
+no load-bearing fact, about more than tonight), but in the after-run matrix
+`hot_take` is the label that leaks both ways: 6 of 12 right, 3 called
+`analysis` and 3 called `reaction`. Meanwhile `analysis` (6/8) and
+`reaction` (10/11) mostly hold. So the model seems to have learned the two
+labels marked by something being *present* (a number or fact, live-game
+language), and it treats `hot_take` as whatever's left over. That suggests
+it reacts to whether a number appears, not to whether the number carries
+the argument, which is exactly the "decoration" distinction my rules were
+written for.
 
 
 
