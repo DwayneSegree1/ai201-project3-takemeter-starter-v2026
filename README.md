@@ -358,6 +358,17 @@ and criteria drafts, and ran notebook sections 1–5.
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
      prediction made afterwards isn't one. -->
 
+The trained model will beat the baseline on `reaction`, where game-thread
+posts share surface cues ("lol", NBC/Peacock, "tonight") that fine-tuning
+picks up easily. It will lose to the baseline on `analysis`, where a
+definition that says "checkable fact" gives the zero-shot model a better
+handle than 38 training examples did.
+
+> Written and committed before running `baseline.py`. Honest caveat: the unit
+> 5 run had already printed the trained model's per-label F1 (including 0.00
+> for `analysis`), so this predicts the baseline's side, not the trained
+> model's.
+
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
