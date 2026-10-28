@@ -421,30 +421,69 @@ problem: the trained model never predicts it.
 <!-- Five criteria across three seeds. The notebook's section 6 prints the
      spread table; the Target and Verdict columns are yours. -->
 
+Section 6, `RUN_LABEL = "before"`, written to
+`results_three_seeds_before.json`. Default settings (3 epochs, lr 2e-5,
+batch 16, max length 128), trained on `mps` (AMD Radeon Pro 5500M via Metal,
+torch 2.2.2). Seed 42 reproduced the unit 5 run exactly (0.613).
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Balance | each label 25–40% of 201 | 27 / 37 / 35% | (same file) | (same file) | MET |
+| 2. Accuracy | ≥ 0.65 on all seeds | 0.613 | 0.387 | 0.710 | MISSED |
+| 3. Per-label F1 | every label ≥ 0.55 on all seeds | min 0.000 (`analysis`) | min 0.000 (`analysis`) | min 0.571 (`hot_take`) | MISSED |
+| 4. Self-consistency | ≥ 85% on 30 cold re-labels | not measured | not measured | not measured | NOT MEASURED (no unaided labelling was done) |
+| 5. Confidence gap | most-sure third ≥ least-sure third + 0.20 | 0.80 vs 0.40 (+0.40) | 0.70 vs 0.30 (+0.40) | 0.90 vs 0.50 (+0.40) | MET |
+
+**The full spread, as section 6 printed it:**
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.613 | 0.387 | 0.710 | 0.323 |
+| Macro F1 | 0.482 | 0.260 | 0.704 | 0.444 |
+| F1 — `analysis` | 0.000 | 0.000 | 0.706 | 0.706 |
+| F1 — `hot_take` | 0.647 | 0.513 | 0.571 | 0.134 |
+| F1 — `reaction` | 0.800 | 0.267 | 0.833 | 0.567 |
+
+**The spread is a diagnosis.** Accuracy moved **0.323** across three seeds,
+more than three times the ten-point line. The cause shows in the training
+log: final training loss was 1.03, 1.06 and 1.02, barely below the 1.10
+(ln 3) a model guessing uniformly across three labels would score. With
+139 training posts, 3 epochs and batch 16, the model gets about 27
+optimiser steps, and it hasn't learned much in that time. Seeds 42 and 7
+collapsed towards the biggest label: they predicted `hot_take` for 22 and
+27 of 31 posts, and `analysis` for none. Seed 2024 was the only one that
+broke out (it predicted `analysis` 9 times and got 6 right). So the
+0.39–0.71 range shows how undertrained the model is, more than how good it
+is.
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
+Seed 42 (section 7 prints the first seed):
+
+| true \ predicted | analysis | hot_take | reaction |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **analysis** | 0 | 8 | 0 |
+| **hot_take** | 0 | 11 | 1 |
+| **reaction** | 0 | 3 | 8 |
 
 **My biggest off-diagonal number, and what it means:**
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
 
+All 8 real `analysis` posts were called `hot_take`, and no post went the
+other way, so the model hasn't learned the `analysis`/`hot_take` boundary
+at all. It treats "confident claim about the NBA" as `hot_take` whether or
+not a checkable fact backs it.
+
+That's the direction you'd expect from an undertrained model that falls
+back on the biggest label. Section 7 says a lopsided direction "usually
+points at your labelling", so the agreement report should test that too.
+For this pair, though, the training loss suggests the model never got far
+enough to learn the fact-versus-no-fact cue.
 
 
 ---
