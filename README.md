@@ -431,7 +431,7 @@ torch 2.2.2). Seed 42 reproduced the unit 5 run exactly (0.613).
 | 1. Balance | each label 25–40% of 201 | 27 / 37 / 35% | (same file) | (same file) | MET |
 | 2. Accuracy | ≥ 0.65 on all seeds | 0.613 | 0.387 | 0.710 | MISSED |
 | 3. Per-label F1 | every label ≥ 0.55 on all seeds | min 0.000 (`analysis`) | min 0.000 (`analysis`) | min 0.571 (`hot_take`) | MISSED |
-| 4. Self-consistency | ≥ 85% on 30 cold re-labels | not measured | not measured | not measured | NOT MEASURED (no unaided labelling was done) |
+| 4. Self-consistency | ≥ 85% on 30 cold re-labels | not measured | not measured | not measured | MISSED |
 | 5. Confidence gap | most-sure third ≥ least-sure third + 0.20 | 0.80 vs 0.40 (+0.40) | 0.70 vs 0.30 (+0.40) | 0.90 vs 0.50 (+0.40) | MET |
 
 **The full spread, as section 6 printed it:**
@@ -495,11 +495,11 @@ enough to learn the fact-versus-no-fact cue.
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Balance | each label 25–40% of the 201 posts | MET | 55 / 75 / 71 = 27% / 37% / 35% in `labels.csv`. It's a property of the file, so it's the same for every seed |
+| 2 | Overall accuracy | ≥ 0.65 on all three seeds | MISSED | 0.613, 0.387, 0.710. Only seed 2024 clears it |
+| 3 | Per-label F1 | every label ≥ 0.55 on all three seeds | MISSED | Seeds 42 and 7: `analysis` 0.000. Seed 7: `hot_take` 0.513, `reaction` 0.267. Only seed 2024 clears it (lowest 0.571) |
+| 4 | Self-consistency | ≥ 85% agreement on 30 cold re-labels | MISSED | Never measured: no unaided labelling or re-labelling was done, so there's no number to hold against the target |
+| 5 | Confidence gap | most-sure third ≥ least-sure third + 0.20, all seeds | MET | +0.40 on every seed (0.80/0.40, 0.70/0.30, 0.90/0.50) |
 
 **Diagnoses**
 
@@ -511,6 +511,63 @@ enough to learn the fact-versus-no-fact cue.
      ⚠️ Use your agreement report as evidence. It is the only instrument you
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
+
+**Misses 2 and 3 (accuracy and per-label F1): the model is undertrained, so
+in this setup it can't learn the task from 139 training posts. This is a
+model problem, not a labelling problem.**
+
+- **What the numbers show.** `analysis` F1 is 0.000 on seeds 42 and 7
+  because those models never predict `analysis` at all: precision and
+  recall are both 0 across 8 test posts. On the same seeds, `hot_take`
+  recall is high (0.92, 0.83) and its precision is low (0.50, 0.37). The
+  models are defaulting to the biggest label. Seed 42 predicted `hot_take`
+  for 22 of 31 posts, and seed 7 for 27.
+- **Why it isn't a hard pair.** The seed-42 matrix sends all 8 `analysis`
+  posts to `hot_take`, and 0 go the other way. A genuinely hard pair gets
+  confused in both directions. A one-way flow into the majority label is
+  what a model that hasn't learned anything yet looks like.
+- **Why it's undertraining.** Final training loss was 1.03, 1.06 and 1.02
+  across the seeds. ln 3 = 1.10 is what you get by guessing uniformly over
+  three labels, so the model barely moved off its starting point. With 139
+  posts, 3 epochs and batch 16, it gets about 27 optimiser steps.
+- **Why the task is still reachable.** When seed 2024 did break out, it got
+  `analysis` to P 0.67 / R 0.75 / F1 0.71. The zero-shot baseline with bare
+  label names also picks out some `analysis` (F1 0.22) with no training at
+  all. A fact-versus-no-fact signal is there to learn.
+- **Why it isn't my labelling (the agreement report).** The same labeller
+  produced both the 201 training labels and the 30 staff-set labels:
+  Claude, using rules that copy the staff structure (a load-bearing fact,
+  then "about the writer vs about the world", then "recency doesn't outrank
+  evidence"). On the staff set, that labeller matched staff 30/30, with
+  nothing in pile (a). That included all 4 `analysis`/`hot_take` posts
+  staff flagged as hard (sp_005, sp_010, sp_014, sp_020). If the
+  `analysis`/`hot_take` boundary had been applied two ways in training, the
+  same rule on that pair is where it should have shown up. It didn't.
+- **The limits of that evidence.** The staff set is easier than r/nba: it
+  has 7 hard posts out of 30, and it's grouped by label in id order, which
+  leaks the answer. The r/nba hard cases (for example "It's $25 million a
+  year…") are messier than anything in it. And nobody checked the 201
+  r/nba labels by hand. So the report makes a labelling cause unlikely but
+  doesn't rule it out. Criterion 4 was the instrument for that, and it was
+  never run.
+- **A smaller, separate effect: too few `analysis` examples in the test
+  set.** With 8 `analysis` posts in test, one post moves its F1 by about
+  0.1. That explains wobble between 0.6 and 0.7. It can't explain 0.000
+  twice and 0.706 once. That jump is the model either learning the label or
+  not, which is the undertraining above.
+
+**What would confirm it:** keep the same labels and train longer (more
+epochs or a higher learning rate). If undertraining is the cause, training
+loss should drop well below 1.10, and seeds 42 and 7 should start
+predicting `analysis`. If the labels are the cause, more training won't fix
+the `analysis`→`hot_take` flow.
+
+**Miss 4 (self-consistency): never measured.** No unaided labelling was ever
+done. The cold slot and the staff set were both labelled by Claude at my
+request, and I never re-labelled 30 posts cold to compare against. There's
+no number, so it counts as a miss, not a pass. This is a gap in the
+evidence, not a model problem. It's also the main thing standing between
+"probably not a labelling problem" and "not a labelling problem."
 
 
 
