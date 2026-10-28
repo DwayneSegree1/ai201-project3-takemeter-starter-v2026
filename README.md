@@ -524,12 +524,19 @@ enough to learn the fact-versus-no-fact cue.
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 30 / 30 = 100%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
      of the 30 were chosen because they're genuinely ambiguous — you should be
      winning some of these. -->
+
+**Who labelled these:** the 30 posts in `my_staff_labels.csv` were labelled
+by Claude (Claude Code), at my request, under the staff definitions and
+rules in `data/staff_taxonomy.md`. They were committed (`50929ae`) before
+`data/staff_labels.csv` was in the repo, so the answer key wasn't seen.
+This is not a measure of my own labelling, the same way no cold check of
+mine exists (see The Dataset).
 
 **Disagreements**
 
@@ -546,27 +553,47 @@ enough to learn the fact-versus-no-fact cue.
      written rule two different ways on 30 posts, that is direct evidence about
      what you did across your own 200. -->
 
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+None. Every one of the 30 labels matched staff, so piles (a), (b) and (c)
+are all empty.
 
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+**The hard posts anyway.** Staff marked 7 posts as borderline. Before the
+key arrived, the labelling also wrote down which posts it had hesitated on.
+Comparing those two lists shows how the agreement was reached:
+
+| Post | Staff flagged | Hesitated on before the key | Label (both) | Rule that settled it |
+|---|---|---|---|---|
+| sp_005 carbon plates, 35→50 mpw | yes | yes | `analysis` | 1: the mileage change carries the claim |
+| sp_010 three runners, same session | yes | yes | `analysis` | 1: tiny sample, but the claim rests on it |
+| sp_014 "3% since the shoe rules" | yes | no (it's the taxonomy's own example) | `hot_take` | 1: the number is decoration |
+| sp_019 "nobody enjoys the long run" | yes | no | `hot_take` | 2: a claim about everyone, not the writer |
+| sp_020 "every injury thread…" | yes | no | `hot_take` | 1: checkable in principle, no count given |
+| sp_028 "third DNF this year" | yes | no | `reaction` | 2/3: countable, but nothing argued from it |
+| sp_029 PB shoes, wrong size | yes | yes | `reaction` | 2: the writer's own realisation |
+| sp_007 same loop, 4C vs 24C | no | yes | `analysis` | 3: recency doesn't outrank evidence |
+| sp_017 "peaked in about 2015" | no | yes | `hot_take` | 1: the year is decoration |
+| sp_023 "eight weeks out, two miles" | no | yes | `reaction` | 2: the numbers describe, they don't argue |
 
 **What the pattern in my disagreements tells me:**
 
+There are no disagreements to read a pattern from. My honest read is that
+the set was easier than the 70s rate staff call normal, for two reasons.
 
+1. **The written rules are tight for this set.** Every one of the 7 posts
+   staff flagged was settled by a numbered rule (rule 1, 2 or 3). None of
+   them needed the rule-4 tie-break. My own taxonomy copied that structure:
+   a load-bearing fact, then "a claim about the world vs the writer",
+   then "recency doesn't outrank evidence". So these rules were already the
+   ones being applied every day.
+2. **The set leaks its own answer.** The posts are grouped by label in id
+   order: sp_001–010 are all `analysis`, sp_011–020 all `hot_take`, and
+   sp_021–030 all `reaction`. A labeller reading top to bottom gets a strong
+   prior from position. That inflates the rate, and I can't separate it from
+   applying the rules well.
+
+What this does **not** tell me is how consistent my own 201 r/nba labels
+are. Those were pre-labelled by the same AI, and criterion 4 (self-agreement
+on 30 cold re-labels) was never measured. The undertrained model in the run
+log is still the main diagnosis, and this result doesn't change it.
 
 ---
 
