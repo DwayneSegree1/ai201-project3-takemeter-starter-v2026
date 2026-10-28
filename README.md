@@ -656,26 +656,91 @@ log is still the main diagnosis, and this result doesn't change it.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** one training setting: **`EPOCHS` from 3 to 10**. Nothing
+else changed: same `labels.csv`, learning rate 2e-5, batch 16, max length
+128, and the same seeds (42, 7, 2024), so the same splits. `RUN_LABEL` was
+set to `"after"`, and the results are in `results_three_seeds_after.json`.
+The change was committed (`Improvement: EPOCHS 3 -> 10`) before the
+after-run, and I picked 10 once. I didn't try other values against the
+test splits.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** misses 2 and 3. Final training loss in the
+before-run was 1.03 / 1.06 / 1.02, barely under the 1.10 (ln 3) of uniform
+guessing. That's about 27 optimiser steps, and two of three seeds never
+predicted `analysis`. The agreement report made a labelling cause unlikely
+(the same labeller matched staff 30/30, including every hard
+`analysis`/`hot_take` post), so the fix had to come from training, not
+relabelling. Ten epochs gives the model about 90 steps.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Balance | each label 25–40% of 201 | 27 / 37 / 35% | (same file) | (same file) | MET |
+| 2. Accuracy | ≥ 0.65 on all seeds | 0.710 | 0.710 | 0.839 | MET |
+| 3. Per-label F1 | every label ≥ 0.55 on all seeds | min 0.600 (`hot_take`) | min 0.636 (`hot_take`) | min 0.783 (`hot_take`) | MET |
+| 4. Self-consistency | ≥ 85% on 30 cold re-labels | not measured | not measured | not measured | MISSED |
+| 5. Confidence gap | most-sure third ≥ least-sure third + 0.20 | 0.90 vs 0.50 (+0.40) | 1.00 vs 0.30 (+0.70) | 0.80 vs 0.80 (+0.00) | MISSED |
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.710 | 0.710 | 0.839 | 0.129 |
+| Macro F1 | 0.700 | 0.712 | 0.838 | 0.138 |
+| F1 — `analysis` | 0.667 | 0.737 | 0.824 | 0.157 |
+| F1 — `hot_take` | 0.600 | 0.636 | 0.783 | 0.183 |
+| F1 — `reaction` | 0.833 | 0.762 | 0.909 | 0.147 |
+
+Confusion matrix, seed 42, after:
+
+| true \ predicted | analysis | hot_take | reaction |
+|---|---|---|---|
+| **analysis** | 6 | 2 | 0 |
+| **hot_take** | 3 | 6 | 3 |
+| **reaction** | 1 | 0 | 10 |
 
 **Did it help, and how do I know:**
 
 <!-- If it didn't, say so. Relabelling that didn't help is a genuinely
      interesting result and earns full credit. -->
 
+**Yes, on the two criteria it was aimed at. It also cost one criterion that
+had been met.**
 
+| | Before (3 epochs) | After (10 epochs) |
+|---|---|---|
+| Accuracy, seeds 42 / 7 / 2024 | 0.613 / 0.387 / 0.710 | 0.710 / 0.710 / 0.839 |
+| Accuracy spread | 0.323 | 0.129 |
+| `analysis` F1, seeds 42 / 7 / 2024 | 0.000 / 0.000 / 0.706 | 0.667 / 0.737 / 0.824 |
+| Final training loss | 1.03 / 1.06 / 1.02 | 0.64 / 0.76 / 0.67 |
+| Criteria met | 1, 5 | 1, 2, 3 |
+
+- **The diagnosis was right.** Training loss dropped well below 1.10 on
+  every seed. Seeds 42 and 7, which never predicted `analysis` before, now
+  predict it 10 and 11 times out of 31, and their `analysis` F1 went from
+  0.000 to 0.667 and 0.737. That's the result I said would confirm
+  undertraining. A labelling problem wouldn't have been fixed by more
+  steps.
+- **The confusion changed shape.** Before, the `analysis`/`hot_take` flow
+  was one-way: 8 posts went to `hot_take` and 0 came back. Now it's 2 one
+  way and 3 the other. Section 7 calls that roughly symmetric. The model
+  now treats this as a hard boundary rather than ignoring a label.
+  `hot_take` is the weakest label on every seed (0.60–0.78), which fits:
+  it's defined by an absence (no support), and it sits on both of my
+  hard boundaries.
+- **The spread is still more than 10 points (0.129).** Each seed's test
+  split has only 31 posts, so one post is worth 0.032 accuracy, and the
+  0.710 vs 0.839 gap is 4 posts. The dataset is still too small for a
+  stable measure. The swing just shrank from "learned or didn't" to
+  sampling noise.
+- **What got worse: criterion 5.** Before, the confidence gap was +0.40 on
+  every seed. After, seed 2024's least-sure third is as accurate as its
+  most-sure third: 0.80 vs 0.80. That's a ceiling effect. With accuracy at
+  0.839, 8 of the 10 least-confident posts are right, so there's no room
+  for a gap. But the target says "on all three seeds", so it's a miss. On
+  the best seed, confidence no longer tells you which predictions to
+  double-check.
+- **Not changed by this: criterion 4.** No amount of training measures
+  self-consistency, so it's still missed.
 
 ---
 
