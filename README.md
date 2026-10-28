@@ -347,12 +347,28 @@ and criteria drafts, and ran notebook sections 1–5.
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
+Baseline: `facebook/bart-large-mnli`, zero-shot, prompted with my
+definitions from `label_definitions.txt`. It was scored on the same 31
+held-out posts in `test_split.csv` as the trained model (`held_out: true`).
+
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.258 | 0.613 | +0.355 |
+| Macro F1 | 0.137 | 0.482 | +0.346 |
+| F1 — `analysis` | 0.410 | 0.000 | -0.410 |
+| F1 — `hot_take` | 0.000 | 0.647 | +0.647 |
+| F1 — `reaction` | 0.000 | 0.800 | +0.800 |
+
+**The same baseline with bare label names**, no definitions
+(`baseline_results_bare_names.json`, same 31 posts):
+
+| Measure | Bare names | Definitions | What the definitions were worth |
+|---|---|---|---|
+| Overall accuracy | 0.613 | 0.258 | **-0.355** |
+| Macro F1 | 0.531 | 0.137 | -0.394 |
+| F1 — `analysis` | 0.222 | 0.410 | +0.188 |
+| F1 — `hot_take` | 0.621 | 0.000 | -0.621 |
+| F1 — `reaction` | 0.750 | 0.000 | -0.750 |
 
 **What I predicted before I looked:**
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
@@ -372,6 +388,29 @@ handle than 38 training examples did.
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
+
+**The +0.355 is mostly the baseline breaking, not the trained model being
+good.** With my definitions, the zero-shot model predicted `analysis` for
+all 31 posts. Its 0.258 accuracy is just the share of `analysis` in the test
+split (8 of 31).
+
+The likely cause is how `baseline.py` builds the prompt: `"This post is {}."`
+with the definition dropped in. My definitions start with verbs, so the model
+was scoring sentences like "This post is states a conclusion backed by a
+specific, checkable fact…". The longest, most detailed definition then wins
+every time. So my definitions were worth **-0.355** accuracy, measured. They
+were written for a human labeller, not for a sentence template.
+
+**Against the fairer opponent, fine-tuning added nothing on accuracy.** The
+bare-names baseline scores 0.613, exactly what the trained model scores. Its
+macro F1 is higher (0.531 vs 0.482), because it gets some `analysis` right
+and the trained model gets none. The trained model is only slightly better
+on `hot_take` (+0.026) and `reaction` (+0.050), which is one or two posts on
+a test split this size.
+
+**The prediction held on both counts.** The trained model beat both
+baselines on `reaction` and lost to both on `analysis`. `analysis` is the
+problem: the trained model never predicts it.
 
 
 

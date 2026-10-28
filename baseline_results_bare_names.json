@@ -1,0 +1,189 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 31,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": false,
+  "scores": {
+    "n": 31,
+    "accuracy": 0.6129032258064516,
+    "f1_macro": 0.5309706257982121,
+    "per_label": {
+      "analysis": {
+        "precision": 1.0,
+        "recall": 0.125,
+        "f1": 0.2222222222222222,
+        "support": 8
+      },
+      "hot_take": {
+        "precision": 0.5294117647058824,
+        "recall": 0.75,
+        "f1": 0.6206896551724139,
+        "support": 12
+      },
+      "reaction": {
+        "precision": 0.6923076923076923,
+        "recall": 0.8181818181818182,
+        "f1": 0.7500000000000001,
+        "support": 11
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "You\u2019re an idiot if you think lethal isn\u2019t an amazing shooter. NBA players go to him during the off season",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Why are they taking the ball out of cades hands?",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Kind of fun having basketball playing in the background while I work",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "We are going to hear the opening seconds of NY State Of Mind SO MUCH this year",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Technically in the forground and the future as well. The Celtics offered Brown + 2 FRPs. The Bucks wanted Brown + 4 FRPs + Baylor + Hugo + Potentially an extra FRP swap. They basically wanted the deal they got from Miami and treated Brown and Herro as comparable assets.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "That's what I'm thinking. Wemby is the big star. Curry and Luka move jerseys as well. It's hard to imagine if money is all that matters that they would want SGA winning championships. He's not the most charismatic guy and all people do is whine about him foul baiting, even casuals. If NBA wanted anyone to win it would be Wemby. Wemby vs 76ers would be the ticket so that it has Lebron vs Wemby in a passing the torch storyline. Just saying, if this were WWE, that would be the obvious storyline.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I can't imagine how annoying Boston fans will be if PG is great this year mixed bag so far I think",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I mean he looks pretty smart given he walked away basically scot-free with millions of extra dollars, which I didnt' agree with, but it is what it is. Still an idiotic move for both parties, their actions together completly tanked the franchise.",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I don\u2019t know why anyone thought the Celtics wouldn\u2019t still be good, the only question was d white tbh cause he was shooting terrible second half of last season",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "There are a few other elite backcourts in the league\u2026 Ant + Melo, Luka + AR, Brunson + Bridges from the top of my head\u2026 All 3 have the guy who is better than Maxey (you can argue they are same tier), yet the 2nd guy is also definitely better than Edgecombe.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Fuck NBC. I don't want to watch the news. This is a disaster of a tip off for them",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Genuinely hilarious situation. Dean Wade is also injured FYI. So if Bona can\u2019t suit up, it\u2019s a tandem of Embiid and Walker at the 5.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "why tf does the first game of the year start at 2pm in the afternoon lmao",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "This is great for me too (not a hawks fan). Pistons fan living in Tennessee, Hawks games are always blacked out (along with Memphis) on league pass. Super annoying to live in a market with double dipped blackout restrictions. Anyway, I\u2019ll be able to watch the 4 Pistons/Hawks games this season without sailing the seas",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Been a tough year for Philly but today I am ready for the turnaround. Go Sixers!",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Spurs was 2-6 against the Knicks last season and really thought, \"They didn't beat us, we beat ourselves.\" Really already celebrated their championship by beating OKC, wonder what delusions they going to have this year.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Jaden and Vassel got roughly the same deal and both have been worth it. Jaden much more so in my biased opinion of course.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "They start out like 20-3 and then some beat reporter asks JB what it's like to live in LeBron's shadow",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "they want a triple header so it's either early or really late they want european viewers they see march madness and world cup ratings and are experimenting",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "The reason the aspiration deal was scrutinized is because the clippers (Steve Ballmer) gave money to Aspiration, who then sponsored Kawhi Leonard for a suspiciously high monetary amount. You need both links in the chain.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "lol he is absolutely not one of the worlds best shooters, he shot like 75% FT in college and was a good but not extraordinary 3pt shooter for one season as a senior. None of his pro seasons were very good. There are quite literally thousands of better shooters than him",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "It's $25 million a year. That's really nothing in today's NBA.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I\u2019ve got dateline and not the game\u2026. This sucks",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Its the 98th highest AAV in the NBA. I dont think some of you guys realize how insane many NBA contracts are when you make statements like this.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "If they are not - well, there was no better option at immediate success than this anyway. Can't agree with this. He signed for vet min. He literally could have joined 8-10 other good teams and still been in the same boat without the major injury risk to their star player. I think the only city he really wanted to live in besides LA was NY. But the Knicks winning the title eliminated them as an option, and the Nets suck too much. Which left Philly and the commute by helicopter as the only other real option, even if Embiid's health made for a non-ideal situation.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I\u2019ll tell you one thing, if there\u2019s a bunch of political ads like we\u2019ve been getting with the NFL games I\u2019m not even gonna bother watching any of these games live, DVR and fast-forward every piece of garbage political ad.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "VJ and Brown are interchangeable when it comes who you'd consider to be the back court. So sure your argument works when you pick VJ, but Jaylen is better than everyone of the second option you listed.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Fuckin A this is good Joe Mazzula Oblongata always tryin to make me like the Celtics",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I got Judge Judy instead of the game smh",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Also, LeBron\u2019s brand and team is so large it\u2019s very easily conceivable and honestly likely that this deal was done between him and Fanatics.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "It sounds like that's just their relationship. Mazzulla is a known weirdo, but Baylor's weird too, and they seem to bring it out in each other quite a bit. This is Baylor talking about his rookie season: \u201cBefore the season started, I had a meeting with him and he was pretty much like, \u2018Listen, I don\u2019t really like rookies, so you\u2019re gonna have to battle this year, and that\u2019s kind of how it is,\u2019\u201d Then Baylor follows up the story, talking about how he likes the bluntness.",
+      "gold": "analysis",
+      "predicted": "reaction"
+    }
+  ]
+}
